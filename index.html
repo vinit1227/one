@@ -1,282 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Anshika ❤️</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Dancing+Script:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- AOS -->
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
-    
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/responsive.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Anshika</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  body{ display:flex; align-items:center; justify-content:center; min-height:100vh; }
+
+  .gate-inner{ text-align:center; padding: 0 24px; position:relative; z-index:2; }
+
+  .gate-label{
+    font-family: var(--serif); font-style: italic; font-size: 1.15rem;
+    color: var(--parchment-dim); margin-bottom: 30px;
+  }
+
+  .seal{
+    width: 90px; height: 90px; border-radius: 50%;
+    margin: 0 auto 34px;
+    background: radial-gradient(circle at 35% 30%, var(--gold-bright), var(--gold) 55%, #7a5c2e 100%);
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--serif); font-size: 1.6rem; color: var(--bordeaux-deep);
+    box-shadow: 0 0 40px rgba(201,166,107,0.35), inset 0 2px 6px rgba(255,255,255,0.4), inset 0 -6px 10px rgba(0,0,0,0.35);
+    animation: seal-breathe 4s ease-in-out infinite;
+    transition: transform 0.4s ease;
+  }
+  .seal.cracking{ animation: seal-crack 0.7s ease forwards; }
+  @keyframes seal-breathe{
+    0%,100%{ box-shadow: 0 0 40px rgba(201,166,107,0.35), inset 0 2px 6px rgba(255,255,255,0.4), inset 0 -6px 10px rgba(0,0,0,0.35); }
+    50%{ box-shadow: 0 0 55px rgba(201,166,107,0.5), inset 0 2px 6px rgba(255,255,255,0.4), inset 0 -6px 10px rgba(0,0,0,0.35); }
+  }
+  @keyframes seal-crack{
+    0%{ transform: scale(1); } 30%{ transform: scale(1.15) rotate(-3deg); } 100%{ transform: scale(2.4); opacity:0; }
+  }
+
+  .gate-card{ transition: transform 0.25s ease; }
+  .gate-card.shake{ animation: shake 0.4s ease; }
+  @keyframes shake{
+    0%,100%{ transform: translateX(0); }
+    20%{ transform: translateX(-8px); }
+    40%{ transform: translateX(8px); }
+    60%{ transform: translateX(-6px); }
+    80%{ transform: translateX(6px); }
+  }
+
+  .date-fields{ display:flex; align-items:center; justify-content:center; gap: 10px; margin-bottom: 22px; }
+  .date-fields input{
+    width: 56px; text-align:center;
+    background: transparent; border: none; border-bottom: 1px solid rgba(201,166,107,0.4);
+    color: var(--parchment); font-family: var(--serif); font-size: 1.6rem;
+    padding: 6px 0; letter-spacing: 0.05em;
+  }
+  .date-fields input#yyyy{ width: 84px; }
+  .date-fields input:focus{ outline:none; border-bottom-color: var(--gold-bright); }
+  .date-sep{ color: var(--parchment-dim); font-family: var(--serif); font-size: 1.4rem; opacity:0.6; }
+
+  .date-labels{ display:flex; align-items:center; justify-content:center; gap: 10px; margin-bottom: 26px; }
+  .date-labels span{ width:56px; font-size: 0.6rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--parchment-dim); opacity:0.6; }
+  .date-labels span:last-child{ width:84px; }
+
+  #gateSubmit{
+    font-family: var(--sans); letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.72rem;
+    background: linear-gradient(180deg, var(--gold-bright), var(--gold)); color: var(--bordeaux-deep);
+    border:none; padding: 13px 30px; border-radius: 26px; cursor:pointer; font-weight:600;
+    box-shadow: 0 8px 24px rgba(201,166,107,0.22); transition: transform 0.25s ease;
+  }
+  #gateSubmit:hover{ transform: translateY(-2px); }
+
+  #gateError{
+    margin-top: 18px; font-size: 0.78rem; letter-spacing: 0.05em; color: var(--rose);
+    opacity:0; transition: opacity 0.3s ease; font-family: var(--sans);
+  }
+  #gateError.visible{ opacity:1; }
+
+  .gate-hint{
+    margin-top: 40px; font-size: 0.64rem; letter-spacing: 0.22em; text-transform:uppercase;
+    color: var(--parchment-dim); opacity: 0.55;
+  }
+</style>
 </head>
 <body>
-    <!-- Custom Cursor -->
-    <div class="custom-cursor" id="customCursor">
-        <i class="fas fa-heart"></i>
-    </div>
-    <div class="cursor-trail" id="cursorTrail"></div>
 
-    <!-- Background Effects Container -->
-    <div class="background-effects" id="backgroundEffects">
-        <canvas id="particleCanvas"></canvas>
-        <div class="aurora-overlay"></div>
-        <div class="floating-hearts"></div>
-    </div>
+  <div id="particles"></div>
 
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loader-content">
-            <div class="heart-loader">
-                <i class="fas fa-heart"></i>
-            </div>
-            <div class="loading-text">
-                <span class="loading-percentage" id="loadingPercentage">0%</span>
-            </div>
-            <div class="loading-bar">
-                <div class="loading-progress" id="loadingProgress"></div>
-            </div>
-            <p class="loading-message">Preparing something special...</p>
-        </div>
+  <div class="gate-inner">
+    <div class="gate-label">A letter for Anshika</div>
+    <div class="seal" id="sealMark">A</div>
+
+    <div class="gate-card" id="gateCard">
+      <div class="date-labels"><span>Day</span><span></span><span>Month</span><span></span><span>Year</span></div>
+      <div class="date-fields">
+        <input type="text" inputmode="numeric" id="dd" maxlength="2" placeholder="DD" autocomplete="off">
+        <span class="date-sep">/</span>
+        <input type="text" inputmode="numeric" id="mm" maxlength="2" placeholder="MM" autocomplete="off">
+        <span class="date-sep">/</span>
+        <input type="text" inputmode="numeric" id="yyyy" maxlength="4" placeholder="YYYY" autocomplete="off">
+      </div>
+      <button id="gateSubmit">Open</button>
+      <div id="gateError"></div>
     </div>
 
-    <!-- Password Screen -->
-    <div class="password-screen" id="passwordScreen" style="display: none;">
-        <div class="password-card glass-card">
-            <div class="password-icon">
-                <i class="fas fa-lock"></i>
-            </div>
-            <h2 class="password-title">Only One Person Can Enter ❤️</h2>
-            <p class="password-hint">Hint: Your Birth Date</p>
-            <div class="password-input-group">
-                <input 
-                    type="text" 
-                    id="passwordInput" 
-                    class="password-input" 
-                    placeholder="DD MM" 
-                    maxlength="5"
-                    autocomplete="off"
-                >
-                <button class="password-submit" id="passwordSubmit">
-                    <i class="fas fa-arrow-right"></i>
-                </button>
-            </div>
-            <p class="password-error" id="passwordError"></p>
-        </div>
-    </div>
+    <div class="gate-hint">only she would know this date</div>
+  </div>
 
-    <!-- Main Content -->
-    <main id="mainContent" style="display: none;">
-        <!-- Intro Section -->
-        <section class="intro-section" id="introSection">
-            <div class="intro-content">
-                <div class="intro-heart">
-                    <i class="fas fa-heart"></i>
-                </div>
-                <div class="intro-text">
-                    <span id="typedText"></span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Apology Section -->
-        <section class="apology-section" id="apologySection">
-            <div class="apology-card glass-card" data-aos="fade-up">
-                <div class="apology-paragraphs">
-                    <p class="apology-text" data-aos="fade-up" data-aos-delay="100">I'm sorry...</p>
-                    <p class="apology-text" data-aos="fade-up" data-aos-delay="300">I know I made mistakes.</p>
-                    <p class="apology-text" data-aos="fade-up" data-aos-delay="500">I never wanted to hurt you.</p>
-                    <p class="apology-text" data-aos="fade-up" data-aos-delay="700">I miss talking to you every day.</p>
-                    <p class="apology-text" data-aos="fade-up" data-aos-delay="900">Thank you for every beautiful memory.</p>
-                    <p class="apology-text" data-aos="fade-up" data-aos-delay="1100">I hope you'll watch till the end.</p>
-                </div>
-                <button class="next-button" id="nextToReels">
-                    <span>Next</span>
-                    <i class="fas fa-heart"></i>
-                </button>
-            </div>
-        </section>
-
-        <!-- Reels Section -->
-        <section class="reels-section" id="reelsSection">
-            <h2 class="reels-heading" data-aos="fade-up">
-                Insta pe to bahaut reels dekh liya...<br>
-                <span class="highlight">Ab idhar dekho ❤️</span>
-            </h2>
-            <p class="reels-subtitle" data-aos="fade-up">These are all the edits I made only for you.</p>
-            
-            <div class="reels-container" id="reelsContainer">
-                <div class="reel-viewer" id="reelViewer">
-                    <video id="reelVideo" muted playsinline></video>
-                    <div class="reel-controls">
-                        <button class="reel-btn" id="prevReel"><i class="fas fa-chevron-left"></i></button>
-                        <button class="reel-btn" id="playPauseReel"><i class="fas fa-play"></i></button>
-                        <button class="reel-btn" id="nextReel"><i class="fas fa-chevron-right"></i></button>
-                        <button class="reel-btn" id="fullscreenReel"><i class="fas fa-expand"></i></button>
-                    </div>
-                    <div class="reel-progress">
-                        <div class="reel-progress-bar" id="reelProgressBar"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="reels-complete" id="reelsComplete" style="display: none;">
-                <h3>Thank you for watching ❤️</h3>
-                <button class="gallery-btn" id="openGallery">
-                    <span>Open My Gallery</span>
-                    <i class="fas fa-images"></i>
-                </button>
-            </div>
-        </section>
-
-        <!-- Gallery Section -->
-        <section class="gallery-section" id="gallerySection">
-            <h2 class="gallery-heading" data-aos="fade-up">Our Beautiful Memories</h2>
-            <div class="gallery-masonry" id="galleryMasonry">
-                <!-- Gallery items will be loaded dynamically -->
-            </div>
-        </section>
-
-        <!-- Timeline Section -->
-        <section class="timeline-section" id="timelineSection">
-            <h2 class="timeline-heading" data-aos="fade-up">Our Journey Together</h2>
-            <div class="timeline" id="timeline">
-                <!-- Timeline items will be loaded dynamically -->
-            </div>
-        </section>
-
-        <!-- Notes Section -->
-        <section class="notes-section" id="notesSection">
-            <h2 class="notes-heading" data-aos="fade-up">Little Notes for You</h2>
-            <div class="notes-container" id="notesContainer">
-                <!-- Notes will be loaded dynamically -->
-            </div>
-        </section>
-
-        <!-- Memory Jar Section -->
-        <section class="jar-section" id="jarSection">
-            <div class="jar-container" data-aos="zoom-in">
-                <div class="memory-jar" id="memoryJar">
-                    <i class="fas fa-jar"></i>
-                    <div class="jar-glow"></div>
-                </div>
-                <p class="jar-instruction">Click the jar for a random memory</p>
-                <div class="memory-popup glass-card" id="memoryPopup" style="display: none;">
-                    <p id="memoryText"></p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Love Counter Section -->
-        <section class="counter-section" id="counterSection">
-            <h2 class="counter-heading" data-aos="fade-up">Counting Every Moment Since We Met</h2>
-            <div class="counter-container" id="loveCounter">
-                <div class="counter-item">
-                    <span class="counter-number" id="days">0</span>
-                    <span class="counter-label">Days</span>
-                </div>
-                <div class="counter-item">
-                    <span class="counter-number" id="hours">0</span>
-                    <span class="counter-label">Hours</span>
-                </div>
-                <div class="counter-item">
-                    <span class="counter-number" id="minutes">0</span>
-                    <span class="counter-label">Minutes</span>
-                </div>
-                <div class="counter-item">
-                    <span class="counter-number" id="seconds">0</span>
-                    <span class="counter-label">Seconds</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Hidden Ending -->
-        <section class="ending-section" id="endingSection">
-            <div class="ending-content" data-aos="fade-up" data-aos-duration="2000">
-                <h2 class="ending-text">Thank you for giving me these few minutes ❤️</h2>
-            </div>
-        </section>
-
-        <!-- Final Letter Section -->
-        <section class="letter-section" id="letterSection">
-            <div class="envelope" id="envelope">
-                <div class="envelope-flap"></div>
-                <div class="envelope-body">
-                    <i class="fas fa-envelope"></i>
-                </div>
-            </div>
-            <div class="letter-content glass-card" id="letterContent" style="display: none;">
-                <div class="letter-paper">
-                    <p class="letter-text" id="letterText"></p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Final Screen -->
-        <section class="final-section" id="finalSection">
-            <div class="final-heart">
-                <i class="fas fa-heart"></i>
-            </div>
-            <h2 class="final-text" data-aos="fade-up">
-                No matter what happens...<br>
-                Thank you for being part of my life ❤️
-            </h2>
-            <p class="final-quote" data-aos="fade-up" data-aos-delay="500">
-                "Some people come into our lives and leave footprints on our hearts"
-            </p>
-            <div class="confetti-container" id="confettiContainer"></div>
-        </section>
-    </main>
-
-    <!-- Music Player -->
-    <div class="music-player glass-card" id="musicPlayer">
-        <button class="music-btn" id="musicToggle">
-            <i class="fas fa-music"></i>
-        </button>
-        <div class="music-controls" id="musicControls" style="display: none;">
-            <button id="prevSong"><i class="fas fa-backward"></i></button>
-            <button id="playPauseSong"><i class="fas fa-play"></i></button>
-            <button id="nextSong"><i class="fas fa-forward"></i></button>
-            <input type="range" id="volumeControl" min="0" max="100" value="50">
-        </div>
-    </div>
-
-    <!-- Fullscreen Gallery Modal -->
-    <div class="gallery-modal" id="galleryModal" style="display: none;">
-        <span class="modal-close" id="modalClose">&times;</span>
-        <img class="modal-content" id="modalImage">
-        <div class="modal-nav">
-            <button id="modalPrev"><i class="fas fa-chevron-left"></i></button>
-            <button id="modalNext"><i class="fas fa-chevron-right"></i></button>
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
-    
-    <!-- Custom JS Modules -->
-    <script type="module" src="js/config.js"></script>
-    <script type="module" src="js/firebase.js"></script>
-    <script type="module" src="js/main.js"></script>
-    <script type="module" src="js/intro.js"></script>
-    <script type="module" src="js/reels.js"></script>
-    <script type="module" src="js/gallery.js"></script>
-    <script type="module" src="js/timeline.js"></script>
-    <script type="module" src="js/music.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="gate.js"></script>
 </body>
 </html>
