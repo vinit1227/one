@@ -1,6 +1,4 @@
-/* ============================================================
-   FIREBASE — your real project config
-============================================================ */
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
@@ -17,9 +15,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-/* Logs one gate attempt — right or wrong — to the "gate_attempts" collection.
-   Security rules (see README) allow writes from anyone but block all reads,
-   so only you, signed into the Firebase console, can see this data. */
+
 export function logAttempt(success, enteredDate){
   addDoc(collection(db, "gate_attempts"), {
     success: success,
