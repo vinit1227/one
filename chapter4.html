@@ -31,6 +31,125 @@
   }
   #forgive-btn:hover{ transform: translateY(-2px); }
   #forgive-btn.pressed{ opacity:0.6; pointer-events:none; }
+
+  /* Message Box Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.active {
+    display: flex;
+  }
+  .modal-box {
+    background: linear-gradient(160deg, #1a0f0f, #0d0d0d);
+    border: 1px solid rgba(201,166,107,0.4);
+    border-radius: 20px;
+    padding: 30px 24px;
+    max-width: 440px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  }
+  .modal-box h3 {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    color: var(--gold-bright);
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+  .modal-box p {
+    color: var(--parchment-dim);
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    font-family: var(--sans);
+  }
+  .modal-box textarea {
+    width: 100%;
+    min-height: 120px;
+    background: rgba(201,166,107,0.05);
+    border: 1px solid rgba(201,166,107,0.3);
+    border-radius: 12px;
+    color: var(--parchment);
+    font-family: var(--serif);
+    font-size: 1rem;
+    padding: 14px;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .modal-box textarea:focus {
+    border-color: var(--gold-bright);
+  }
+  .modal-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 18px;
+    justify-content: center;
+  }
+  .modal-buttons button {
+    font-family: var(--sans);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    padding: 12px 24px;
+    border-radius: 24px;
+    cursor: pointer;
+    font-weight: 500;
+    border: none;
+    transition: transform 0.2s ease;
+  }
+  .modal-buttons button:hover {
+    transform: translateY(-2px);
+  }
+  .btn-send {
+    background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+    color: var(--bordeaux-deep);
+  }
+  .btn-cancel {
+    background: transparent;
+    border: 1px solid rgba(201,166,107,0.4);
+    color: var(--parchment-dim);
+  }
+  .modal-success {
+    display: none;
+    color: var(--gold-bright);
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 14px;
+  }
+  .modal-success.active {
+    display: block;
+  }
+
+  #continue-btn {
+    font-family: var(--sans);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+    color: var(--bordeaux-deep);
+    border: none;
+    padding: 16px 36px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 10px 30px rgba(201,166,107,0.25);
+    transition: transform 0.25s ease;
+    margin-top: 26px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #continue-btn:hover {
+    transform: translateY(-2px);
+  }
 </style>
 </head>
 <body>
@@ -46,7 +165,6 @@
       </div>
 
       <div id="letter" class="reveal">
-        <!-- EDIT ME: Replace this entire paragraph with your own words -->
         <p class="letter-para">Umm so pehle to phirse Anshika I am really really sorry I know tumhe mera paras pdhna accha ni lgta but mujhe aur koi tarika ni mila to ye kiya jo aata hai usse kiya I hope tum ye sb pdho Smjh nai aa rha kya bolu kya nai tumhe to sb pta hai, ignore krke kya milta tumhe roz wp check krta hu ki ab msg aaya hoga ye vo but ni seen krke chhor deti ho tumhe kuch bolna ho to suna do yr ignore krne se accha tumhare man mein jo hai sb suna do lekin aise ignore mt kro kya kra maine jo mere sath ye krti.</p>
         
         <p class="sign">— always</p>
@@ -57,18 +175,75 @@
         <h2 class="reveal">I'm sorry. I love you.</h2>
         <button id="forgive-btn" class="reveal">I forgive you 💛</button>
         <br>
-        <a href="chapter3.html" class="nav-back reveal" style="margin-top:26px; display:inline-block;">← Chapter III</a>
+        <button id="continue-btn" class="reveal">Continue →</button>
+        <br>
+        <a href="chapter3.html" class="nav-back reveal" style="margin-top:20px; display:inline-block;">← Chapter III</a>
       </div>
     </section>
   </main>
 
+  <!-- Message Box Modal -->
+  <div class="modal-overlay" id="messageModal">
+    <div class="modal-box">
+      <h3>Tumhe jo sunana hai suna do ✨</h3>
+      <p>Jo man mein hai, jo gussa hai, jo pyaar hai — sab likh do. Main padhunga.</p>
+      <textarea id="messageInput" placeholder="Type your message here..."></textarea>
+      <div class="modal-buttons">
+        <button class="btn-cancel" id="cancelBtn">Cancel</button>
+        <button class="btn-send" id="sendBtn">Send 💌</button>
+      </div>
+      <div class="modal-success" id="modalSuccess">Sent with love. Thank you 💛</div>
+    </div>
+  </div>
+
   <footer class="sitefooter">made with a lot of feeling</footer>
 
 <script src="app.js"></script>
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBNxUJ5rlkoT9oOwE3OBa8d8_eP5tzV9uU",
+  authDomain: "trail-8c73a.firebaseapp.com",
+  projectId: "trail-8c73a",
+  storageBucket: "trail-8c73a.firebasestorage.app",
+  messagingSenderId: "666337254770",
+  appId: "1:666337254770:web:c62e7d90f828536a4a51eb",
+  measurementId: "G-3RGHWPHMR3"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Log page visit
+async function logVisit() {
+  try {
+    await addDoc(collection(db, "page_visits"), {
+      page: "chapter4",
+      timestamp: serverTimestamp(),
+      userAgent: navigator.userAgent
+    });
+    console.log("Visit logged to Firebase");
+  } catch (err) {
+    console.error("Visit log failed:", err);
+  }
+}
+
+// Log on page load
+logVisit();
+
+// Forgive button - hearts animation
 document.getElementById('forgive-btn').addEventListener('click', function(){
   this.textContent = 'thank you 💛';
   this.classList.add('pressed');
+  
+  // Log to Firebase
+  addDoc(collection(db, "forgive_clicks"), {
+    action: "forgive_clicked",
+    timestamp: serverTimestamp()
+  }).catch(err => console.error("Forgive log failed:", err));
+  
   for (let i = 0; i < 24; i++){
     const heart = document.createElement('div');
     heart.textContent = '💛';
@@ -87,6 +262,70 @@ document.getElementById('forgive-btn').addEventListener('click', function(){
       heart.style.opacity = '0';
     });
     setTimeout(() => heart.remove(), 1500);
+  }
+});
+
+// Modal elements
+const modal = document.getElementById('messageModal');
+const continueBtn = document.getElementById('continue-btn');
+const cancelBtn = document.getElementById('cancelBtn');
+const sendBtn = document.getElementById('sendBtn');
+const messageInput = document.getElementById('messageInput');
+const modalSuccess = document.getElementById('modalSuccess');
+
+// Open modal
+continueBtn.addEventListener('click', () => {
+  modal.classList.add('active');
+  messageInput.value = '';
+  modalSuccess.classList.remove('active');
+  sendBtn.disabled = false;
+  sendBtn.textContent = 'Send 💌';
+});
+
+// Close modal
+cancelBtn.addEventListener('click', () => {
+  modal.classList.remove('active');
+});
+
+// Close modal when clicking outside
+modal.addEventListener('click', (e) => {
+  if (e.target === modal) {
+    modal.classList.remove('active');
+  }
+});
+
+// Send message
+sendBtn.addEventListener('click', async () => {
+  const message = messageInput.value.trim();
+  if (!message) {
+    messageInput.style.borderColor = '#c44';
+    setTimeout(() => {
+      messageInput.style.borderColor = 'rgba(201,166,107,0.3)';
+    }, 1500);
+    return;
+  }
+
+  sendBtn.disabled = true;
+  sendBtn.textContent = 'Sending...';
+
+  try {
+    await addDoc(collection(db, "messages_from_anshika"), {
+      message: message,
+      timestamp: serverTimestamp(),
+      page: "chapter4"
+    });
+    
+    modalSuccess.classList.add('active');
+    messageInput.value = '';
+    
+    setTimeout(() => {
+      modal.classList.remove('active');
+      modalSuccess.classList.remove('active');
+    }, 2000);
+  } catch (err) {
+    console.error("Message send failed:", err);
+    sendBtn.textContent = 'Try Again';
+    sendBtn.disabled = false;
   }
 });
 </script>
