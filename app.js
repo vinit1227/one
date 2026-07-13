@@ -1,4 +1,4 @@
-/* Shared across every chapter page: ambient gold particles + fade-in-on-scroll */
+
 
 (function(){
   const field = document.getElementById('particles');
