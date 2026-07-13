@@ -1,8 +1,6 @@
 import { logAttempt } from './firebase-config.js';
 
-/* ============================================================
-   THE PASS — her birthdate, day + month only
-============================================================ */
+
 const CORRECT_DAY   = 26;
 const CORRECT_MONTH = 2;
 
@@ -46,7 +44,7 @@ function checkPass(){
   } else {
     showError("not quite — try again");
     gateCard.classList.remove('shake');
-    void gateCard.offsetWidth; // restart animation
+    void gateCard.offsetWidth; 
     gateCard.classList.add('shake');
   }
 }
@@ -68,7 +66,7 @@ function unlock(){
 
 document.getElementById('gateSubmit').addEventListener('click', checkPass);
 
-/* ambient gold particles, same as the rest of the site */
+
 (function(){
   const field = document.getElementById('particles');
   if (!field) return;
