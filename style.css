@@ -1,0 +1,158 @@
+/* ============================================================
+   TOKENS
+============================================================ */
+:root{
+  --ink:#0b0b0f;
+  --bordeaux:#2a0e12;
+  --bordeaux-deep:#180a0d;
+  --gold:#c9a66b;
+  --gold-bright:#e8c77e;
+  --rose:#8c5b5b;
+  --parchment:#f3e9da;
+  --parchment-dim:#cbbfae;
+  --serif: 'Cormorant Garamond', serif;
+  --sans: 'Jost', sans-serif;
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; }
+
+body{
+  min-height:100vh;
+  background: radial-gradient(ellipse at 50% -10%, var(--bordeaux) 0%, var(--ink) 55%);
+  color: var(--parchment);
+  font-family: var(--sans);
+  overflow-x:hidden;
+  position:relative;
+  opacity: 0;
+  animation: page-in 0.9s ease forwards;
+}
+
+@keyframes page-in{ to{ opacity: 1; } }
+
+body.page-out{
+  animation: page-out 0.45s ease forwards;
+}
+@keyframes page-out{ to{ opacity: 0; } }
+
+::selection{ background: var(--gold); color: var(--ink); }
+a{ color: var(--gold-bright); }
+:focus-visible{ outline: 1.5px solid var(--gold-bright); outline-offset: 4px; }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior:auto !important; }
+}
+
+/* ============================================================
+   SHARED TEXT ELEMENTS
+============================================================ */
+.eyebrow{
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.divider{
+  width: 64px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 28px auto;
+}
+
+.chapter-tag{
+  position: fixed;
+  top: 26px; right: 30px;
+  font-size: 0.68rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--parchment-dim);
+  opacity: 0.6;
+  z-index: 5;
+}
+
+h1, h2{ font-family: var(--serif); font-weight:500; }
+
+/* ============================================================
+   AMBIENT PARTICLES
+============================================================ */
+#particles{ position: fixed; inset:0; pointer-events:none; z-index:1; }
+.mote{
+  position:absolute; bottom:-10px;
+  width:3px; height:3px; border-radius:50%;
+  background: var(--gold-bright);
+  opacity:0.5;
+  animation: rise linear infinite;
+}
+@keyframes rise{
+  to{ transform: translateY(-110vh) translateX(var(--drift, 20px)); opacity:0; }
+}
+
+/* ============================================================
+   PAGE / CHAPTER LAYOUT
+============================================================ */
+main{ position:relative; z-index:2; }
+
+.page{
+  min-height:100vh;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding: 120px 24px 80px;
+  max-width: 860px;
+  margin: 0 auto;
+  text-align:center;
+}
+
+.reveal{ opacity:0; transform: translateY(24px); transition: opacity 0.9s ease, transform 0.9s ease; }
+.reveal.visible{ opacity:1; transform: translateY(0); }
+
+.chapter-head{ margin-bottom: 48px; }
+.chapter-head h2{ font-size: clamp(2rem, 4vw, 2.8rem); margin-top: 10px; }
+
+/* ============================================================
+   CONTINUE / NAV
+============================================================ */
+.nav-continue{
+  margin-top: 64px;
+  display:inline-flex; align-items:center; gap: 10px;
+  font-family: var(--sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: var(--bordeaux-deep);
+  background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+  padding: 15px 32px;
+  border-radius: 30px;
+  text-decoration:none;
+  font-weight:600;
+  border:none;
+  cursor:pointer;
+  box-shadow: 0 10px 30px rgba(201,166,107,0.22);
+  transition: transform 0.25s ease;
+}
+.nav-continue:hover{ transform: translateY(-2px); }
+
+.nav-back{
+  margin-top: 20px;
+  display:inline-block;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--parchment-dim);
+  text-decoration:none;
+  opacity:0.7;
+}
+.nav-back:hover{ opacity:1; }
+
+footer.sitefooter{
+  text-align:center; padding: 30px 24px 50px;
+  font-size: 0.65rem; letter-spacing: 0.18em; text-transform:uppercase;
+  color: var(--parchment-dim); opacity:0.45;
+  position:relative; z-index:2;
+}
+
+@media (max-width: 560px){
+  .page{ padding: 100px 20px 60px; }
+}
