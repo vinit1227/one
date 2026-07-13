@@ -102,6 +102,116 @@
     <div class="gate-hint">birthdate nd month (anshika ke alawa jo try kre uski mkc)</div>
   </div>
 
-<script type="module" src="gate.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBNxUJ5rlkoT9oOwE3OBa8d8_eP5tzV9uU",
+  authDomain: "trail-8c73a.firebaseapp.com",
+  projectId: "trail-8c73a",
+  storageBucket: "trail-8c73a.firebasestorage.app",
+  messagingSenderId: "666337254770",
+  appId: "1:666337254770:web:c62e7d90f828536a4a51eb",
+  measurementId: "G-3RGHWPHMR3"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Log visit immediately when page loads
+async function logVisit() {
+  try {
+    await addDoc(collection(db, "page_visits"), {
+      page: "gate_index",
+      timestamp: serverTimestamp(),
+      userAgent: navigator.userAgent,
+      screenSize: `${window.innerWidth}x${window.innerHeight}`
+    });
+    console.log("✅ Visit logged to Firebase");
+  } catch (err) {
+    console.error("Visit log failed:", err);
+  }
+}
+
+// Log immediately
+logVisit();
+
+// Gate logic
+const CORRECT_DD = "19";
+const CORRECT_MM = "11";
+
+const ddInput = document.getElementById('dd');
+const mmInput = document.getElementById('mm');
+const submitBtn = document.getElementById('gateSubmit');
+const errorDiv = document.getElementById('gateError');
+const seal = document.getElementById('sealMark');
+const gateCard = document.getElementById('gateCard');
+
+async function logAttempt(success, enteredDate) {
+  try {
+    await addDoc(collection(db, "gate_attempts"), {
+      success: success,
+      enteredDate: enteredDate,
+      timestamp: serverTimestamp()
+    });
+    console.log("📝 Attempt logged:", { success, enteredDate });
+  } catch (err) {
+    console.error("Firestore log failed:", err);
+  }
+}
+
+submitBtn.addEventListener('click', async () => {
+  const dd = ddInput.value.trim();
+  const mm = mmInput.value.trim();
+  const enteredDate = `${dd}/${mm}`;
+
+  if (dd === CORRECT_DD && mm === CORRECT_MM) {
+    // Success!
+    await logAttempt(true, enteredDate);
+    
+    seal.classList.add('cracking');
+    errorDiv.classList.remove('visible');
+    
+    setTimeout(() => {
+      window.location.href = 'chapter1.html';
+    }, 700);
+  } else {
+    // Failed
+    await logAttempt(false, enteredDate);
+    
+    gateCard.classList.add('shake');
+    errorDiv.textContent = 'Wrong date. Try again.';
+    errorDiv.classList.add('visible');
+    
+    setTimeout(() => {
+      gateCard.classList.remove('shake');
+    }, 400);
+    
+    ddInput.value = '';
+    mmInput.value = '';
+    ddInput.focus();
+  }
+});
+
+// Auto-advance between fields
+ddInput.addEventListener('input', () => {
+  if (ddInput.value.length === 2) {
+    mmInput.focus();
+  }
+});
+
+// Enter key support
+mmInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    submitBtn.click();
+  }
+});
+ddInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    submitBtn.click();
+  }
+});
+</script>
 </body>
 </html>
