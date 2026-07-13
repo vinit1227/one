@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* Minimal global resets & variables — style.css assumed to exist, but we embed essentials */
     :root {
       --gold: #c9a66b;
       --gold-bright: #e8c77e;
@@ -18,6 +17,9 @@
       --ink: #1a1a1a;
       --serif: 'Cormorant Garamond', serif;
       --sans: 'Jost', sans-serif;
+    }
+    * {
+      box-sizing: border-box;
     }
     body {
       margin: 0;
@@ -32,6 +34,7 @@
       inset: 0;
       z-index: 0;
       pointer-events: none;
+      background: radial-gradient(circle at 20% 30%, rgba(201,166,107,0.06) 0%, transparent 45%);
     }
     .chapter-tag {
       position: fixed;
@@ -92,9 +95,9 @@
       transform: translateY(0);
     }
     
-    /* reels frame — slightly bigger and refined */
+    /* reels frame — slightly bigger */
     #reels-frame {
-      max-width: 440px;  /* increased from 380px */
+      max-width: 440px;
       width: 100%;
       margin: 0 auto;
       border: 1px solid rgba(201, 166, 107, 0.35);
@@ -150,6 +153,7 @@
       cursor: pointer;
       border: none;
       transition: background 0.3s;
+      outline: none;
     }
     .switch::after {
       content: '';
@@ -169,12 +173,13 @@
       transform: translateX(18px);
     }
     #reels-scroller {
-      height: 680px;      /* slightly taller */
+      height: 680px;
       max-height: 70vh;
       overflow-y: scroll;
       scroll-snap-type: y mandatory;
       border-radius: 24px;
       scrollbar-width: none;
+      -ms-overflow-style: none;
     }
     #reels-scroller::-webkit-scrollbar {
       display: none;
@@ -190,6 +195,7 @@
       overflow: hidden;
       background: #000;
       box-shadow: 0 8px 22px rgba(0,0,0,0.6);
+      margin-bottom: 2px;
     }
     .reel-card video {
       position: absolute;
@@ -197,6 +203,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      z-index: 0;
     }
     .reel-placeholder {
       position: absolute;
@@ -226,6 +233,7 @@
       font-size: 1.1rem;
       color: var(--parchment);
       letter-spacing: 0.4px;
+      pointer-events: none;
     }
     .reel-mute {
       position: absolute;
@@ -245,9 +253,14 @@
       align-items: center;
       justify-content: center;
       transition: 0.2s;
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
     }
     .reel-mute:hover {
       background: rgba(201, 166, 107, 0.35);
+    }
+    .reel-mute:active {
+      transform: scale(0.95);
     }
     .reel-navbtns {
       position: absolute;
@@ -273,10 +286,15 @@
       align-items: center;
       justify-content: center;
       transition: 0.25s;
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
     }
     .reel-nav:hover {
       transform: scale(1.1);
       background: rgba(201, 166, 107, 0.35);
+    }
+    .reel-nav:active {
+      transform: scale(0.95);
     }
     .reel-nav.disabled {
       opacity: 0.25;
@@ -313,6 +331,20 @@
       position: relative;
       z-index: 2;
     }
+    @media (max-width: 500px) {
+      #reels-frame {
+        max-width: 100%;
+        border-radius: 24px;
+        padding: 8px 18px 8px 8px;
+      }
+      #reels-scroller, .reel-card {
+        height: 580px;
+        max-height: 65vh;
+      }
+      h2 {
+        font-size: 2.2rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -347,24 +379,15 @@
   <footer class="sitefooter">made with loveee</footer>
 
   <script>
-    // Simple reveal observer (if app.js not loaded or for standalone)
-    document.addEventListener('DOMContentLoaded', () => {
-      const revealElements = document.querySelectorAll('.reveal');
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
-        });
-      }, { threshold: 0.2 });
-      revealElements.forEach(el => observer.observe(el));
-      
-      // Trigger particles placeholder (lightweight)
-      const particlesDiv = document.getElementById('particles');
-      if (particlesDiv) {
-        particlesDiv.style.background = 'radial-gradient(circle at 20% 30%, rgba(201,166,107,0.06) 0%, transparent 45%)';
-      }
-    });
-  </script>
+    // Reveal animation observer
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.2 });
+    
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-  <script>
+ 
