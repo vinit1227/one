@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter II — For Anshika</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  #reels-frame{
+    max-width: 380px;
+    margin: 0 auto;
+    border: 1px solid rgba(201,166,107,0.35);
+    border-radius: 28px;
+    padding: 10px;
+    background: linear-gradient(180deg, rgba(201,166,107,0.06), transparent);
+  }
+  .reels-toggle{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    margin-bottom: 12px;
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform:uppercase;
+    color: var(--parchment-dim);
+  }
+  .switch{
+    width: 38px; height: 20px; border-radius: 20px;
+    background: rgba(201,166,107,0.25);
+    position:relative; cursor:pointer; border:none;
+    transition: background 0.3s ease;
+  }
+  .switch::after{
+    content:''; position:absolute; top:2px; left:2px;
+    width:16px; height:16px; border-radius:50%;
+    background: var(--gold-bright);
+    transition: transform 0.3s ease;
+  }
+  .switch.on{ background: var(--gold); }
+  .switch.on::after{ transform: translateX(18px); }
+
+  #reels-scroller{
+    height: 640px; max-height: 66vh;
+    overflow-y: scroll; scroll-snap-type: y mandatory;
+    border-radius: 20px; scrollbar-width: none;
+  }
+  #reels-scroller::-webkit-scrollbar{ display:none; }
+
+  .reel-card{
+    scroll-snap-align: center;
+    height: 640px; max-height: 66vh;
+    position: relative;
+    display:flex; align-items:flex-end;
+    border-radius: 20px; overflow:hidden;
+    background: #000;
+  }
+  .reel-card video{ position:absolute; inset:0; width:100%; height:100%; object-fit: cover; }
+  .reel-placeholder{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+    background: linear-gradient(160deg, var(--bordeaux) 0%, var(--ink) 100%);
+    border: 1px dashed rgba(201,166,107,0.4);
+    color: var(--parchment-dim);
+    font-family: var(--serif); font-style: italic; font-size: 1rem;
+    text-align:center; padding: 20px;
+  }
+  .reel-caption{
+    position:relative; z-index:2; width:100%;
+    padding: 22px 18px;
+    background: linear-gradient(0deg, rgba(0,0,0,0.75), transparent);
+    font-family: var(--serif); font-style: italic; font-size: 1.05rem;
+    color: var(--parchment);
+  }
+  .reel-mute{
+    position:absolute; top:14px; right:14px; z-index:3;
+    background: rgba(0,0,0,0.4); border: 1px solid rgba(201,166,107,0.5);
+    color: var(--gold-bright); width:34px; height:34px; border-radius:50%;
+    cursor:pointer; font-size: 0.9rem;
+  }
+</style>
+</head>
+<body>
+
+  <div id="particles"></div>
+  <div class="chapter-tag">Chapter II / IV</div>
+
+  <main>
+    <section class="page" id="reels">
+      <div class="chapter-head reveal">
+        <div class="eyebrow">Chapter II</div>
+        <h2>Memories, on a loop</h2>
+        <p style="color:var(--parchment-dim); font-weight:300; margin-top:10px; font-style:italic;">
+          Insta pe toh bahut reels dekh liye, ab yahan dekho.
+        </p>
+      </div>
+
+      <div id="reels-frame" class="reveal">
+        <div class="reels-toggle">
+          <span>Manual scroll</span>
+          <button class="switch" id="autoplaySwitch" aria-label="Toggle auto-advance"></button>
+          <span>Auto-advance</span>
+        </div>
+        <div id="reels-scroller"></div>
+      </div>
+
+      <a href="chapter3.html" class="nav-continue reveal">My Gallery →</a>
+      <a href="chapter1.html" class="nav-back reveal">← Chapter I</a>
+    </section>
+  </main>
+
+  <footer class="sitefooter">made with a lot of feeling</footer>
+
+<script src="app.js"></script>
+<script src="reels.js"></script>
+</body>
+</html>
