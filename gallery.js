@@ -7,8 +7,20 @@
    show instead of a broken page.
 ============================================================ */
 const PHOTOS = [
-  // "https://res.cloudinary.com/oglpra1n/image/upload/<file-name>.jpg",
-  // "https://res.cloudinary.com/oglpra1n/image/upload/<file-name>.jpg",
+   "https://res.cloudinary.com/oglpra1n/image/upload/v1783929528/IMG_20260713_132505_789_qxndu2.jpg",
+  
+   "https://res.cloudinary.com/oglpra1n/image/upload/v1783929528/IMG_20260713_132505_531_v6hnfs.jpg",
+   "https://res.cloudinary.com/oglpra1n/image/upload/v1783929528/IMG_20260713_132506_235_yt2f71.jpg",
+   "https://res.cloudinary.com/oglpra1n/image/upload/v1783929528/IMG_20260713_132505_769_i9e46o.jpg",
+   "https://res.cloudinary.com/oglpra1n/image/upload/v1783929528/IMG_20260713_132506_361_afvjuc.jpg",
+   "https://res.cloudinary.com/oglpra1n/image/upload/v1783929528/IMG_20260713_132506_476_dwvxvb.jpg",
+   "https://res.cloudinary.com/oglpra1n/image/upload/v1783929529/IMG_20260713_132506_306_xeazyl.jpg",
+   "https://res.cloudinary.com/oglpra1n/image/upload/v1783929529/IMG_20260713_132505_866_pxjqzj.jpg",
+   "https://res.cloudinary.com/oglpra1n/image/upload/v1783929624/Snapchat-921176396_wpfzuv.jpg",
+   "https://res.cloudinary.com/oglpra1n/image/upload/v1783929624/Snapchat-1474959809_kq6c0i.jpg",
+   "https://res.cloudinary.com/oglpra1n/image/upload/v1783929624/Snapchat-1993317126_llq0se.jpg",
+   "https://res.cloudinary.com/oglpra1n/image/upload/v1783929625/Snapchat-109353678_nskfud.jpg",
+   
 ];
 
 const galleryGrid = document.getElementById('gallery-grid');
