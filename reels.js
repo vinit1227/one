@@ -1,10 +1,5 @@
 /* ============================================================
    CONFIG — your Cloudinary videos
-   Your cloud name (oglpra1n) is already in the URL pattern below —
-   just swap <file-name> for the actual public ID of each upload.
-   Find it in Cloudinary: Media Library → click the video → copy
-   the "Public ID". Leave the list empty and a placeholder card
-   shows instead of a broken page.
 ============================================================ */
 const REELS = [
   { src: "https://res.cloudinary.com/oglpra1n/video/upload/v1783929626/Snapchat-2412882_v5guc3.mp4", caption: "" },
@@ -27,12 +22,16 @@ const REELS = [
 ];
 
 const reelsScroller = document.getElementById('reels-scroller');
+const reelsIndicator = document.getElementById('reels-indicator');
 const autoplaySwitch = document.getElementById('autoplaySwitch');
 let autoAdvance = false;
 
 autoplaySwitch.addEventListener('click', () => {
   autoAdvance = !autoAdvance;
   autoplaySwitch.classList.toggle('on', autoAdvance);
+  // Videos must NOT loop while auto-advance is on, otherwise the
+  // "ended" event that triggers the next scroll never fires.
+  reelsScroller.querySelectorAll('video').forEach(v => { v.loop = !autoAdvance; });
 });
 
 function buildReels(){
@@ -45,21 +44,42 @@ function buildReels(){
       </div>`;
     return;
   }
+
   REELS.forEach((r, i) => {
     const card = document.createElement('div');
     card.className = 'reel-card';
     card.innerHTML = `
-      <video src="${r.src}" muted loop playsinline data-index="${i}"></video>
+      <video src="${r.src}" muted playsinline data-index="${i}"></video>
       <button class="reel-mute" aria-label="Toggle sound">🔇</button>
+      <div class="reel-navbtns">
+        <button class="reel-nav up" aria-label="Previous reel">↑</button>
+        <button class="reel-nav down" aria-label="Next reel">↓</button>
+      </div>
       <div class="reel-caption">${r.caption || ''}</div>
     `;
     reelsScroller.appendChild(card);
 
     const vid = card.querySelector('video');
+    vid.loop = !autoAdvance; // loop unless auto-advance is on
+
     const muteBtn = card.querySelector('.reel-mute');
     muteBtn.addEventListener('click', () => {
       vid.muted = !vid.muted;
       muteBtn.textContent = vid.muted ? '🔇' : '🔊';
+    });
+
+    const upBtn = card.querySelector('.reel-nav.up');
+    const downBtn = card.querySelector('.reel-nav.down');
+    if (i === 0) upBtn.classList.add('disabled');
+    if (i === REELS.length - 1) downBtn.classList.add('disabled');
+
+    upBtn.addEventListener('click', () => {
+      const prev = card.previousElementSibling;
+      if (prev) prev.scrollIntoView({ behavior: 'smooth' });
+    });
+    downBtn.addEventListener('click', () => {
+      const next = card.nextElementSibling;
+      if (next) next.scrollIntoView({ behavior: 'smooth' });
     });
 
     vid.addEventListener('ended', () => {
@@ -70,12 +90,45 @@ function buildReels(){
     });
   });
 
+  buildIndicator();
+  startReelObservers();
+}
+
+/* ============================================================
+   POSITION INDICATOR — a thin vertical line of segments,
+   one per reel, like Instagram's side progress rail
+============================================================ */
+function buildIndicator(){
+  reelsIndicator.innerHTML = '';
+  REELS.forEach(() => {
+    const seg = document.createElement('div');
+    seg.className = 'seg';
+    reelsIndicator.appendChild(seg);
+  });
+  updateIndicator(0);
+}
+
+function updateIndicator(currentIndex){
+  const segs = reelsIndicator.querySelectorAll('.seg');
+  segs.forEach((seg, idx) => {
+    seg.classList.remove('current', 'watched');
+    if (idx < currentIndex) seg.classList.add('watched');
+    else if (idx === currentIndex) seg.classList.add('current');
+  });
+}
+
+/* ============================================================
+   PLAY / PAUSE the reel currently in view + keep indicator in sync
+============================================================ */
+function startReelObservers(){
   const videos = reelsScroller.querySelectorAll('video');
+  if (videos.length === 0) return;
   const vidObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       const v = entry.target;
       if (entry.isIntersecting && entry.intersectionRatio > 0.7){
         v.play().catch(()=>{});
+        updateIndicator(parseInt(v.dataset.index, 10));
       } else {
         v.pause();
       }
@@ -83,4 +136,5 @@ function buildReels(){
   }, { threshold: [0, 0.7, 1] });
   videos.forEach(v => vidObserver.observe(v));
 }
+
 buildReels();
