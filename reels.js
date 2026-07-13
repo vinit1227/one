@@ -1,6 +1,4 @@
-/* ============================================================
-   CONFIG — your Cloudinary videos
-============================================================ */
+
 const REELS = [
   { src: "https://res.cloudinary.com/oglpra1n/video/upload/v1783929626/Snapchat-2412882_v5guc3.mp4", caption: "" },
   { src: "https://res.cloudinary.com/oglpra1n/video/upload/v1783929747/VID_20260713_133142_072_pvv6ah.mp4", caption: "" },
@@ -29,8 +27,7 @@ let autoAdvance = false;
 autoplaySwitch.addEventListener('click', () => {
   autoAdvance = !autoAdvance;
   autoplaySwitch.classList.toggle('on', autoAdvance);
-  // Videos must NOT loop while auto-advance is on, otherwise the
-  // "ended" event that triggers the next scroll never fires.
+  
   reelsScroller.querySelectorAll('video').forEach(v => { v.loop = !autoAdvance; });
 });
 
@@ -60,7 +57,7 @@ function buildReels(){
     reelsScroller.appendChild(card);
 
     const vid = card.querySelector('video');
-    vid.loop = !autoAdvance; // loop unless auto-advance is on
+    vid.loop = !autoAdvance; 
 
     const muteBtn = card.querySelector('.reel-mute');
     muteBtn.addEventListener('click', () => {
@@ -94,10 +91,7 @@ function buildReels(){
   startReelObservers();
 }
 
-/* ============================================================
-   POSITION INDICATOR — a thin vertical line of segments,
-   one per reel, like Instagram's side progress rail
-============================================================ */
+
 function buildIndicator(){
   reelsIndicator.innerHTML = '';
   REELS.forEach(() => {
@@ -117,9 +111,7 @@ function updateIndicator(currentIndex){
   });
 }
 
-/* ============================================================
-   PLAY / PAUSE the reel currently in view + keep indicator in sync
-============================================================ */
+
 function startReelObservers(){
   const videos = reelsScroller.querySelectorAll('video');
   if (videos.length === 0) return;
