@@ -1,11 +1,4 @@
-/* ============================================================
-   CONFIG — your Cloudinary photos
-   Your cloud name (oglpra1n) is already in the URL pattern below —
-   just swap <file-name> for the actual public ID of each upload.
-   Find it in Cloudinary: Media Library → click the photo → copy
-   the "Public ID". Leave the list empty and placeholder tiles
-   show instead of a broken page.
-============================================================ */
+
 const PHOTOS = [
    "https://res.cloudinary.com/oglpra1n/image/upload/v1783929528/IMG_20260713_132505_789_qxndu2.jpg",
   
