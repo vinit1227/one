@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter IV — For Anshika</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  #letter{
+    font-family: var(--serif); font-size: 1.25rem; line-height: 2;
+    color: var(--parchment); font-weight: 400; text-align:left;
+  }
+  #letter p{ margin-bottom: 22px; }
+  #letter .sign{ font-style: italic; color: var(--gold-bright); margin-top: 34px; }
+
+  .reasons{ margin-top: 50px; display:grid; gap: 14px; text-align:left; }
+  .reason{
+    border-left: 2px solid var(--gold); padding: 4px 0 4px 18px;
+    font-size: 1.02rem; color: var(--parchment-dim); font-weight: 300;
+  }
+
+  #closing{ text-align:center; margin-top: 70px; }
+  #closing h2{ font-size: clamp(1.8rem, 4vw, 2.6rem); font-style:italic; margin-bottom: 30px; }
+
+  #forgive-btn{
+    font-family: var(--sans); letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.78rem;
+    background: linear-gradient(180deg, var(--gold-bright), var(--gold)); color: var(--bordeaux-deep);
+    border:none; padding: 16px 36px; border-radius: 30px; cursor:pointer; font-weight:600;
+    box-shadow: 0 10px 30px rgba(201,166,107,0.25); transition: transform 0.25s ease;
+  }
+  #forgive-btn:hover{ transform: translateY(-2px); }
+  #forgive-btn.pressed{ opacity:0.6; pointer-events:none; }
+</style>
+</head>
+<body>
+
+  <div id="particles"></div>
+  <div class="chapter-tag">Chapter IV / IV</div>
+
+  <main>
+    <section class="page" id="notes">
+      <div class="chapter-head reveal">
+        <div class="eyebrow">Chapter IV</div>
+        <h2>What I want you to know</h2>
+      </div>
+
+      <div id="letter" class="reveal">
+        <!-- EDIT ME: this whole letter is a placeholder. Replace it with what you actually want to say. -->
+        <p>I keep replaying it, and I keep landing in the same place: I was wrong, and you deserved better than that moment.</p>
+        <p>You give this relationship your whole heart, and I let you down instead of matching that. I'm not writing this to be forgiven right away — I'm writing it because you deserve to hear it properly, not rushed, not half-said.</p>
+        <p>I'm sorry. I mean it, and I'm going to keep showing you, not just telling you.</p>
+        <p class="sign">— always</p>
+      </div>
+
+      <div class="reasons reveal">
+        <!-- EDIT ME: swap these for real reasons -->
+        <div class="reason">The way you laugh at your own jokes before you finish telling them.</div>
+        <div class="reason">How you remember tiny details about people you met once.</div>
+        <div class="reason">The way you make ordinary days feel like an event.</div>
+      </div>
+
+      <div id="closing">
+        <div class="divider reveal"></div>
+        <h2 class="reveal">I'm sorry. I love you.</h2>
+        <button id="forgive-btn" class="reveal">I forgive you 💛</button>
+        <br>
+        <a href="chapter3.html" class="nav-back reveal" style="margin-top:26px; display:inline-block;">← Chapter III</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="sitefooter">made with a lot of feeling</footer>
+
+<script src="app.js"></script>
+<script>
+document.getElementById('forgive-btn').addEventListener('click', function(){
+  this.textContent = 'thank you 💛';
+  this.classList.add('pressed');
+  for (let i = 0; i < 24; i++){
+    const heart = document.createElement('div');
+    heart.textContent = '💛';
+    heart.style.position = 'fixed';
+    heart.style.left = '50%';
+    heart.style.top = '70%';
+    heart.style.fontSize = (12 + Math.random() * 14) + 'px';
+    heart.style.pointerEvents = 'none';
+    heart.style.zIndex = 1001;
+    heart.style.transition = 'transform 1.4s ease, opacity 1.4s ease';
+    document.body.appendChild(heart);
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 100 + Math.random() * 220;
+    requestAnimationFrame(() => {
+      heart.style.transform = `translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist - 150}px) scale(1.4)`;
+      heart.style.opacity = '0';
+    });
+    setTimeout(() => heart.remove(), 1500);
+  }
+});
+</script>
+</body>
+</html>
