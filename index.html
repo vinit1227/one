@@ -54,13 +54,11 @@
     color: var(--parchment); font-family: var(--serif); font-size: 1.6rem;
     padding: 6px 0; letter-spacing: 0.05em;
   }
-  .date-fields input#yyyy{ width: 84px; }
   .date-fields input:focus{ outline:none; border-bottom-color: var(--gold-bright); }
   .date-sep{ color: var(--parchment-dim); font-family: var(--serif); font-size: 1.4rem; opacity:0.6; }
 
   .date-labels{ display:flex; align-items:center; justify-content:center; gap: 10px; margin-bottom: 26px; }
   .date-labels span{ width:56px; font-size: 0.6rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--parchment-dim); opacity:0.6; }
-  .date-labels span:last-child{ width:84px; }
 
   #gateSubmit{
     font-family: var(--sans); letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.72rem;
@@ -91,13 +89,11 @@
     <div class="seal" id="sealMark">A</div>
 
     <div class="gate-card" id="gateCard">
-      <div class="date-labels"><span>Day</span><span></span><span>Month</span><span></span><span>Year</span></div>
+      <div class="date-labels"><span>Day</span><span></span><span>Month</span></div>
       <div class="date-fields">
         <input type="text" inputmode="numeric" id="dd" maxlength="2" placeholder="DD" autocomplete="off">
         <span class="date-sep">/</span>
         <input type="text" inputmode="numeric" id="mm" maxlength="2" placeholder="MM" autocomplete="off">
-        <span class="date-sep">/</span>
-        <input type="text" inputmode="numeric" id="yyyy" maxlength="4" placeholder="YYYY" autocomplete="off">
       </div>
       <button id="gateSubmit">Open</button>
       <div id="gateError"></div>
@@ -106,9 +102,6 @@
     <div class="gate-hint">only she would know this date</div>
   </div>
 
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js"></script>
-<script src="gate.js"></script>
+<script type="module" src="gate.js"></script>
 </body>
 </html>
