@@ -1,10 +1,10 @@
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+import { getDatabase, ref, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBNxUJ5rlkoT9oOwE3OBa8d8_eP5tzV9uU",
   authDomain: "trail-8c73a.firebaseapp.com",
+  databaseURL: "https://trail-8c73a-default-rtdb.firebaseio.com", // TODO: confirm this matches your Realtime Database URL exactly
   projectId: "trail-8c73a",
   storageBucket: "trail-8c73a.firebasestorage.app",
   messagingSenderId: "666337254770",
@@ -13,13 +13,12 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
+const db = getDatabase(app);
 
 export function logAttempt(success, enteredDate){
-  addDoc(collection(db, "gate_attempts"), {
+  push(ref(db, "gate_attempts"), {
     success: success,
     enteredDate: enteredDate,
     timestamp: serverTimestamp()
-  }).catch((err) => console.error("Firestore log failed:", err));
+  }).catch((err) => console.error("Realtime Database log failed:", err));
 }
