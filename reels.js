@@ -26,7 +26,7 @@ let autoAdvance = false;
 autoplaySwitch.addEventListener('click', () => {
   autoAdvance = !autoAdvance;
   autoplaySwitch.classList.toggle('on', autoAdvance);
-  
+
   reelsScroller.querySelectorAll('video').forEach(v => { v.loop = !autoAdvance; });
 });
 
@@ -56,13 +56,15 @@ function buildReels(){
     reelsScroller.appendChild(card);
 
     const vid = card.querySelector('video');
-    vid.loop = !autoAdvance; 
+    vid.loop = !autoAdvance;
 
     const muteBtn = card.querySelector('.reel-mute');
-    muteBtn.addEventListener('click', () => {
+    function toggleMute(){
       vid.muted = !vid.muted;
       muteBtn.textContent = vid.muted ? '🔇' : '🔊';
-    });
+    }
+    muteBtn.addEventListener('click', toggleMute);
+    vid.addEventListener('click', toggleMute);
 
     const upBtn = card.querySelector('.reel-nav.up');
     const downBtn = card.querySelector('.reel-nav.down');
