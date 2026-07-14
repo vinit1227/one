@@ -13,8 +13,8 @@
     font-family: var(--serif); font-size: 1.25rem; line-height: 2;
     color: var(--parchment); font-weight: 400; text-align:left;
   }
-  #letter .letter-para{ 
-    margin-bottom: 28px; 
+  #letter .letter-para{
+    margin-bottom: 28px;
     text-align: justify;
     text-indent: 2em;
   }
@@ -31,6 +31,25 @@
   }
   #forgive-btn:hover{ transform: translateY(-2px); }
   #forgive-btn.pressed{ opacity:0.6; pointer-events:none; }
+
+  #forgive-gif-wrap{
+    display: none;
+    max-width: 280px;
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(201,166,107,0.35);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    opacity: 0;
+    transform: scale(0.85) translateY(10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  #forgive-gif-wrap.show{
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    margin-top: 26px;
+  }
+  #forgive-gif-wrap img{ width:100%; display:block; }
 
   /* Message Box Modal */
   .modal-overlay {
@@ -166,14 +185,17 @@
 
       <div id="letter" class="reveal">
         <p class="letter-para">Umm so pehle to phirse Anshika I am really really sorry I know tumhe mera paras pdhna accha ni lgta but mujhe aur koi tarika ni mila to ye kiya jo aata hai usse kiya I hope tum ye sb pdho Smjh nai aa rha kya bolu kya nai tumhe to sb pta hai, ignore krke kya milta tumhe roz wp check krta hu ki ab msg aaya hoga ye vo but ni seen krke chhor deti ho tumhe kuch bolna ho to suna do yr ignore krne se accha tumhare man mein jo hai sb suna do lekin aise ignore mt kro kya kra maine jo mere sath ye krti.</p>
-        
+
         <p class="sign">— always</p>
       </div>
 
       <div id="closing">
         <div class="divider reveal"></div>
-        <h2 class="reveal">I'm sorry. I love you.</h2>
+        <h2 class="reveal">I'm sorry na ab to maaf krdo💔.</h2>
         <button id="forgive-btn" class="reveal">I forgive you 💛</button>
+        <div id="forgive-gif-wrap">
+          <img id="forgive-gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNDZsZjZta3NkZjBoa3dxcjFid2Jkd3I2OW81cTNwNjN4emRuNWt5biZlcD12MV9naWZzX3NlYXJjaCZjdD1n/MpeWJ9JyTyOm4/giphy.gif" alt="">
+        </div>
         <br>
         <button id="continue-btn" class="reveal">Continue →</button>
         <br>
@@ -185,8 +207,8 @@
   <!-- Message Box Modal -->
   <div class="modal-overlay" id="messageModal">
     <div class="modal-box">
-      <h3>Tumhe jo sunana hai suna do ✨</h3>
-      <p>Jo man mein hai, jo gussa hai, jo pyaar hai — sab likh do. Main padhunga.</p>
+      <h3>Tumhe jo sunana hai suna do 😓</h3>
+      <p></p>
       <textarea id="messageInput" placeholder="Type your message here..."></textarea>
       <div class="modal-buttons">
         <button class="btn-cancel" id="cancelBtn">Cancel</button>
@@ -196,16 +218,17 @@
     </div>
   </div>
 
-  <footer class="sitefooter">made with a lot of feeling</footer>
+  <footer class="sitefooter">made with love </footer>
 
 <script src="app.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+import { getDatabase, ref, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBNxUJ5rlkoT9oOwE3OBa8d8_eP5tzV9uU",
   authDomain: "trail-8c73a.firebaseapp.com",
+  databaseURL: "https://trail-8c73a-default-rtdb.firebaseio.com", // TODO: confirm this matches your Realtime Database URL exactly
   projectId: "trail-8c73a",
   storageBucket: "trail-8c73a.firebasestorage.app",
   messagingSenderId: "666337254770",
@@ -214,17 +237,17 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const db = getDatabase(app);
 
 // Log page visit
 async function logVisit() {
   try {
-    await addDoc(collection(db, "page_visits"), {
+    await push(ref(db, 'page_visits'), {
       page: "chapter4",
       timestamp: serverTimestamp(),
       userAgent: navigator.userAgent
     });
-    console.log("Visit logged to Firebase");
+    console.log("Visit logged to Realtime Database");
   } catch (err) {
     console.error("Visit log failed:", err);
   }
@@ -237,13 +260,18 @@ logVisit();
 document.getElementById('forgive-btn').addEventListener('click', function(){
   this.textContent = 'thank you 💛';
   this.classList.add('pressed');
-  
-  // Log to Firebase
-  addDoc(collection(db, "forgive_clicks"), {
+
+  // Log to Realtime Database
+  push(ref(db, 'forgive_clicks'), {
     action: "forgive_clicked",
     timestamp: serverTimestamp()
   }).catch(err => console.error("Forgive log failed:", err));
-  
+
+  // reveal the gif
+  const gifWrap = document.getElementById('forgive-gif-wrap');
+  gifWrap.style.display = 'block';
+  requestAnimationFrame(() => { gifWrap.classList.add('show'); });
+
   for (let i = 0; i < 24; i++){
     const heart = document.createElement('div');
     heart.textContent = '💛';
@@ -309,15 +337,15 @@ sendBtn.addEventListener('click', async () => {
   sendBtn.textContent = 'Sending...';
 
   try {
-    await addDoc(collection(db, "messages_from_anshika"), {
+    await push(ref(db, 'messages_from_anshika'), {
       message: message,
       timestamp: serverTimestamp(),
       page: "chapter4"
     });
-    
+
     modalSuccess.classList.add('active');
     messageInput.value = '';
-    
+
     setTimeout(() => {
       modal.classList.remove('active');
       modalSuccess.classList.remove('active');
